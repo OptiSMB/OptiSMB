@@ -14,7 +14,7 @@ public partial class Login : ContentPage
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
-        // After Login Success
+        // After Login Success.
       await Navigation.PushAsync(new Home(this.security));
     }
 }
