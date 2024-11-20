@@ -1,7 +1,10 @@
-﻿namespace BusinessSoftware.Security
+﻿
+using BusinessSoftware.Common;
+
+namespace BusinessSoftware.Security
 {
     public interface IBusinessSecurity
     {
-        public void AuthenticateAndAuthorize();
+        Task<SecurityStatusCode> AuthenticateAndAuthorize(bool isLoginPage = false, User user = null);
     }
 }

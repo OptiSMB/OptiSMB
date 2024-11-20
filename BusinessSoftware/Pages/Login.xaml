@@ -17,7 +17,8 @@
                    IsPassword="True" />
 
             <Button Text="Login"
-                    Clicked="OnLoginButtonClicked" />
+                    Clicked="OnLoginOrSignupButtonClicked" 
+                    x:Name="LoginOrSignup"/>
 
             <Label x:Name="ErrorMessage"
                    Text=""

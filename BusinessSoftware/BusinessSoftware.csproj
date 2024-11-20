@@ -58,6 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusinessSoftware.Common\BusinessSoftware.Common.csproj" />
     <ProjectReference Include="..\BusinessSoftware.Security\BusinessSoftware.Security.csproj" />
   </ItemGroup>
 

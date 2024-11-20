@@ -10,7 +10,6 @@ public partial class Home : ContentPage
     {
         InitializeComponent();
         Security = security;    
-        security.AuthenticateAndAuthorize();
     }
     private async void OnProfileClicked(object sender, EventArgs e)
     {
@@ -20,5 +19,9 @@ public partial class Home : ContentPage
     private async void OnSettingsClicked(object sender, EventArgs e)
     {
         //await Navigation.PushAsync(new Pages.SettingsPage());
+    }
+    protected override void OnAppearing()
+    {
+        Security.AuthenticateAndAuthorize();
     }
 }

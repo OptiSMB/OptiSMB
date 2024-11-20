@@ -1,4 +1,4 @@
-﻿namespace BusinessSoftware.Security
+﻿namespace BusinessSoftware.Common
 {
     public class User
     {
