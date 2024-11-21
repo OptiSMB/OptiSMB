@@ -5,6 +5,6 @@ namespace BusinessSoftware.Security
 {
     public interface IBusinessSecurity
     {
-        Task<SecurityStatusCode> AuthenticateAndAuthorize(bool isLoginPage = false, User user = null);
+        Task<SecurityStatusCode> AuthenticateOrCreateUser(User user, bool isLoginPage = false);
     }
 }

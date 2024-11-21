@@ -11,7 +11,7 @@ public partial class Home : ContentPage
     {
         InitializeComponent();
         Security = security;
-        Security.AuthenticateAndAuthorize(user:BusinessSoftwareContext.User);
+        Security.AuthenticateOrCreateUser(BusinessSoftwareContext.User);
     }
     private async void OnProfileClicked(object sender, EventArgs e)
     {

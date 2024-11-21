@@ -7,7 +7,7 @@ namespace BusinessSoftware.Security
 {
     public class SecurityImpementation : IBusinessSecurity
     {
-        public async Task<SecurityStatusCode> AuthenticateAndAuthorize(bool isLoginPage = false, User user = null)
+        public async Task<SecurityStatusCode> AuthenticateOrCreateUser(User user,bool isLoginPage = false)
         {
             if (BusinessSoftwareContext.IsLoggedIn)
             {

@@ -13,11 +13,11 @@ public partial class Login : ContentPage
     }
     private async void OnLoginOrSignupButtonClicked(object sender, EventArgs e)
     {
-        Security.AuthenticateAndAuthorize(true, new User()
+        Security.AuthenticateOrCreateUser(new User()
         {
             UserName = UsernameEntry.Text,
             Password = PasswordEntry.Text,
-        }).GetAwaiter().GetResult();
+        },true).GetAwaiter().GetResult();
 
         await Navigation.PushAsync(new Home(Security));
     }
