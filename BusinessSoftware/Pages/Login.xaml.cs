@@ -6,7 +6,6 @@ namespace BusinessSoftware.Pages;
 public partial class Login : ContentPage
 {
     IBusinessSecurity Security;
-    SecurityStatusCode StatusCode;
     public Login(IBusinessSecurity security)
     {
         InitializeComponent();
@@ -14,7 +13,7 @@ public partial class Login : ContentPage
     }
     private async void OnLoginOrSignupButtonClicked(object sender, EventArgs e)
     {
-        StatusCode = Security.AuthenticateAndAuthorize(true, new User()
+        Security.AuthenticateAndAuthorize(true, new User()
         {
             UserName = UsernameEntry.Text,
             Password = PasswordEntry.Text,
