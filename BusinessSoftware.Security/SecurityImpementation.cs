@@ -34,9 +34,8 @@ namespace BusinessSoftware.Security
                     return await InsertNewUserAsync(user, connection);
                 }
 
-                BusinessSoftwareContext.User = existingUser.First();
-                BusinessSoftwareContext.IsLoggedIn = true;
-                BusinessSoftwareContext.LastLoggedIn = DateTime.Now;
+                UpdateBusinessContextAfterLogin(existingUser.First());
+
                 return SecurityStatusCode.LoginSuccess;
             }
             catch (Exception)
@@ -70,11 +69,16 @@ namespace BusinessSoftware.Security
             // Execute the query
             await connection.ExecuteAsync(insertUserQuery, new { UserName = userName, Password = password });
 
+            UpdateBusinessContextAfterLogin(user);
+
+            return SecurityStatusCode.LoginSuccess;
+        }
+
+        private static void UpdateBusinessContextAfterLogin(User user)
+        {
             BusinessSoftwareContext.User = user;
             BusinessSoftwareContext.IsLoggedIn = true;
             BusinessSoftwareContext.LastLoggedIn = DateTime.Now;
-
-            return SecurityStatusCode.LoginSuccess;
         }
     }
 }
