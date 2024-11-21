@@ -16,7 +16,7 @@
                    x:Name="PasswordEntry"
                    IsPassword="True" />
 
-            <Button Text="Login"
+            <Button Text="Login Or Signup!"
                     Clicked="OnLoginOrSignupButtonClicked" 
                     x:Name="LoginOrSignup"/>
 

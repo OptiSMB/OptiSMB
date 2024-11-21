@@ -1,3 +1,4 @@
+using BusinessSoftware.Common;
 using BusinessSoftware.Security;
 
 namespace BusinessSoftware.Pages;
@@ -11,19 +12,14 @@ public partial class Login : ContentPage
         InitializeComponent();
         Security = security;
     }
-
     private async void OnLoginOrSignupButtonClicked(object sender, EventArgs e)
     {
-        // After Login Success.
-        await Navigation.PushAsync(new Home(Security));
-    }
-    protected override void OnAppearing()
-    {
-        StatusCode =  Security.AuthenticateAndAuthorize(true).GetAwaiter().GetResult();
-
-        if (StatusCode == SecurityStatusCode.RedirectToSignup)
+        StatusCode = Security.AuthenticateAndAuthorize(true, new User()
         {
-            LoginOrSignup.Text = "Enter UserName & Password to SignUp!";
-        }
+            UserName = UsernameEntry.Text,
+            Password = PasswordEntry.Text,
+        }).GetAwaiter().GetResult();
+
+        await Navigation.PushAsync(new Home(Security));
     }
 }

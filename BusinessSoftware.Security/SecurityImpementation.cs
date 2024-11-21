@@ -7,17 +7,46 @@ namespace BusinessSoftware.Security
 {
     public class SecurityImpementation : IBusinessSecurity
     {
-        // This is breaking single responsibilty by adding user table also
-        public async Task<SecurityStatusCode> AuthenticateAndAuthorize(bool isLoginPage = false, User? user = null)
+        public async Task<SecurityStatusCode> AuthenticateAndAuthorize(bool isLoginPage = false, User user = null)
         {
             if (BusinessSoftwareContext.IsLoggedIn)
             {
                 return SecurityStatusCode.LoginSuccess;
             }
+            try
+            {
+                using var connection = SQLiteHelper.GetConnection("SecurityDB.db");
+                connection.Open();
 
-            using var connection = SQLiteHelper.GetConnection("SecurityDB.db");
-            connection.Open();
+                await CreateUserTableIfNotExistDuringLogin(isLoginPage, connection);
 
+                var query = "SELECT * FROM User;";
+                var users = await connection.QueryAsync<User>(query);
+
+                if (users.Count() == 0)
+                {
+                    return await InsertNewUserAsync(user, connection);
+                }
+
+                var existingUser = users.Where(a => a.UserName == user.UserName && a.Password == user.Password);
+                if (existingUser.Count() == 0)
+                {
+                    return await InsertNewUserAsync(user, connection);
+                }
+
+                BusinessSoftwareContext.User = existingUser.First();
+                BusinessSoftwareContext.IsLoggedIn = true;
+                BusinessSoftwareContext.LastLoggedIn = DateTime.Now;
+                return SecurityStatusCode.LoginSuccess;
+            }
+            catch (Exception)
+            {
+                return SecurityStatusCode.LoginFailed;
+            }
+        }
+
+        private async Task CreateUserTableIfNotExistDuringLogin(bool isLoginPage, System.Data.IDbConnection connection)
+        {
             if (isLoginPage)
             {
                 string createUserTableQuery = @"
@@ -28,16 +57,24 @@ namespace BusinessSoftware.Security
                 );";
                 await connection.ExecuteAsync(createUserTableQuery);
             }
+        }
 
-            var query = "SELECT * FROM User;";
-            var users = connection.Query<User>(query);
+        private async Task<SecurityStatusCode> InsertNewUserAsync(User user, System.Data.IDbConnection connection)
+        {
+            var insertUserQuery = "INSERT INTO User (UserName, Password) VALUES (@UserName, @Password);";
 
-            if (users.Count() == 0)
-            {
-                return SecurityStatusCode.RedirectToSignup;
-            }
+            // Replace these values with actual data
+            var userName = user.UserName;
+            var password = user.Password;
 
-            return SecurityStatusCode.RedirectToLogin;
+            // Execute the query
+            await connection.ExecuteAsync(insertUserQuery, new { UserName = userName, Password = password });
+
+            BusinessSoftwareContext.User = user;
+            BusinessSoftwareContext.IsLoggedIn = true;
+            BusinessSoftwareContext.LastLoggedIn = DateTime.Now;
+
+            return SecurityStatusCode.LoginSuccess;
         }
     }
 }

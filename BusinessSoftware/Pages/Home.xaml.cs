@@ -1,3 +1,4 @@
+using BusinessSoftware.AppContext;
 using BusinessSoftware.Security;
 
 namespace BusinessSoftware.Pages;
@@ -9,7 +10,8 @@ public partial class Home : ContentPage
     public Home(IBusinessSecurity security)
     {
         InitializeComponent();
-        Security = security;    
+        Security = security;
+        Security.AuthenticateAndAuthorize(user:BusinessSoftwareContext.User);
     }
     private async void OnProfileClicked(object sender, EventArgs e)
     {
@@ -20,8 +22,13 @@ public partial class Home : ContentPage
     {
         //await Navigation.PushAsync(new Pages.SettingsPage());
     }
-    protected override void OnAppearing()
+
+    protected override bool OnBackButtonPressed()
     {
-        Security.AuthenticateAndAuthorize();
+        if (BusinessSoftwareContext.IsLoggedIn)
+        {
+            return true;
+        }
+        return false;
     }
 }
