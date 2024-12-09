@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Create Organization";
+}
+
+<h2>Create Organization</h2>
+
+<form asp-controller="Organization" asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="OrganizationName">Organization Name</label>
+        <br />
+        <input type="text" id="OrganizationName" name="OrganizationName" class="form-control" placeholder="Enter organization name" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+</form>
