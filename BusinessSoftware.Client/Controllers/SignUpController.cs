@@ -6,7 +6,6 @@ namespace BusinessSoftware.Client.Controllers
     public class SignUpController : Controller
     {
         // GET: SignUpController
-        [Route("SignUp")]
         public ActionResult Index()
         {
             return View();
